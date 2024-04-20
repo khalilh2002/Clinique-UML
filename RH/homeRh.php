@@ -4,31 +4,39 @@
 ?>
 
 <?php 
-    if (isset($_GET["action"])) {
-        print_r($_GET["action"]);
-        exit;
+    if (isset($_GET["action"] )) {
+        
+        switch ($_GET["action"]) {
+            case 'categorie':
+                header('location:gerer_categorie.php');
+                break;
+            case 'employee':
+                header('location:gestion_employee.php');
+                break;
+            case 'demision':
+                header('location:demission.php');
+                break;
+
+            default:
+                # code...
+                break;
+        }
     }
 ?>
 <main>
     <section>
-        <div class="d-flex justify-content-center align-items-center">
-            <form action="homeRh.php" method="get" >
-                <div class="row">
-                    <div class="col-md-6">
-                        <button type="submit" name="action" value="categorie" class="btn btn-outline-primary btn-lg" >Gerer Categorie</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="action" value="employee" class="btn btn-outline-primary btn-lg">Gestion Employee</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="action" value="demision" class="btn btn-outline-primary btn-lg">Demission</button>
-                    </div>
-                
+        <form action="homeRh.php" method="get" >
+            <div class="col-lg-6 col-xxl-4 my-5 mx-auto">
+                <div class="d-grid gap-2">
+                    <button type="submit" name="action" value="categorie" class="btn btn-outline-primary btn-lg" >Gerer Categorie</button>
+                    <button type="submit" name="action" value="employee" class="btn btn-outline-primary btn-lg">Gestion Employee</button>
+                    <button type="submit" name="action" value="demision" class="btn btn-outline-primary btn-lg">Demission</button>
+
                 </div>
-            </form>    
-        </div>
-        
+            </div>
+        </form>    
     </section>
+    
 </main>
 
 <?php

@@ -1,20 +1,17 @@
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "hospitale"; // Change to your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+session_start(); // Start session
+// Check if cadre is logged in
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'cadre_administratif') {
+    header("Location: login.php"); // Redirect to login page if not logged in or not cadre_administratif
+    exit;
 }
 
-// Fetch demands
-$sql = "SELECT id_demande, contenu_demande, type_demande FROM demande";
+// Include database connection
+include 'config.php';
+
+// Retrieve cadre's demands
+$id_cadre_admin = $_SESSION['user_id'];
+$sql = "SELECT id_demande, contenu_demande, type_demande, Status FROM demande WHERE id_cadre_administratif = $id_cadre_admin";
 $result = $conn->query($sql);
 
 ?>
@@ -56,17 +53,31 @@ $result = $conn->query($sql);
         th {
             background-color: #f2f2f2;
         }
+        .btn-en-attente {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-accepte {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn-refuse {
+            background-color: #dc3545;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+         <!-- Logout button -->
+         <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
         <h1>Liste des Demandes</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Contenu Demande</th>
                     <th>Type Demande</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -76,14 +87,18 @@ $result = $conn->query($sql);
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>" . $row["id_demande"] . "</td>
-                                <td>" . $row["contenu_demande"] . "</td>
                                 <td>" . $row["type_demande"] . "</td>
-                                <td>
-                                    <a href='afficher_demande.php?id=" . $row["id_demande"] . "' class='btn btn-info btn-sm mr-2'>Afficher</a>
-                                    <a href='modifier_demande.php?id=" . $row["id_demande"] . "' class='btn btn-warning btn-sm mr-2'>Modifier</a>
-                                    <a href='supprimer_demande.php?id=" . $row["id_demande"] . "' class='btn btn-danger btn-sm'>Supprimer</a>
-                                </td>
-                            </tr>";
+                                <td><button class='btn btn-" . getStatusButtonClass($row["Status"]) . " btn-sm' disabled>" . $row["Status"] . "</button></td>
+                                <td>";
+                        
+                        // Show modifier button only if Status is En Attente
+                        if ($row["Status"] == 'En Attente') {
+                            echo "<a href='modifier_demande.php?id=" . $row["id_demande"] . "' class='btn btn-warning btn-sm mr-2'>Modifier</a>";
+                        }
+
+                        echo "<a href='afficher_demande.php?id=" . $row["id_demande"] . "' class='btn btn-info btn-sm mr-2'>Afficher</a>
+                              <a href='supprimer_demande.php?id=" . $row["id_demande"] . "' class='btn btn-danger btn-sm'>Supprimer</a>
+                              </td></tr>";
                     }
                 } else {
                     echo "<tr><td colspan='4'>Aucune demande trouvée.</td></tr>";
@@ -96,3 +111,19 @@ $result = $conn->query($sql);
     </div>
 </body>
 </html>
+
+<?php
+// Function to get button class based on demande status
+function getStatusButtonClass($status) {
+    switch ($status) {
+        case 'En Attente':
+            return 'en-attente';
+        case 'Accepté':
+            return 'accepte';
+        case 'Refusé':
+            return 'refuse';
+        default:
+            return 'secondary';
+    }
+}
+?>

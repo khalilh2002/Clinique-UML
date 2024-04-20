@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Apr 19, 2024 at 11:30 PM
--- Server version: 8.2.0
--- PHP Version: 8.2.13
+-- Host: 127.0.0.1
+-- Generation Time: Apr 20, 2024 at 06:20 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `hospital0.1`
+-- Database: `hospitale`
 --
 
 -- --------------------------------------------------------
@@ -27,12 +27,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `agenda`
 --
 
-DROP TABLE IF EXISTS `agenda`;
-CREATE TABLE IF NOT EXISTS `agenda` (
-  `id_agenda` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `agenda` (
+  `id_agenda` int(11) NOT NULL,
   `date_rendez_vous` date DEFAULT NULL,
-  `evenement` text,
-  PRIMARY KEY (`id_agenda`)
+  `evenement` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -41,15 +39,22 @@ CREATE TABLE IF NOT EXISTS `agenda` (
 -- Table structure for table `cadre_administratif`
 --
 
-DROP TABLE IF EXISTS `cadre_administratif`;
-CREATE TABLE IF NOT EXISTS `cadre_administratif` (
-  `id_cadre_administratif` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
-  `status` text,
-  `id_directeur` int DEFAULT NULL,
-  PRIMARY KEY (`id_cadre_administratif`),
-  KEY `directeur_fk` (`id_directeur`)
+CREATE TABLE `cadre_administratif` (
+  `id_cadre_administratif` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
+  `status` text DEFAULT NULL,
+  `id_directeur` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cadre_administratif`
+--
+
+INSERT INTO `cadre_administratif` (`id_cadre_administratif`, `nom_complet`, `status`, `id_directeur`) VALUES
+(1, 'Laarbi Errahmani', 'Responsable du Docteurs', 1),
+(2, 'Said Yamal', 'Responsable du Securité', NULL),
+(3, 'Aicha Raghib', 'RH', NULL),
+(5, 'Ahmed El Amrani', 'Responsable du Stock ', NULL);
 
 -- --------------------------------------------------------
 
@@ -57,11 +62,9 @@ CREATE TABLE IF NOT EXISTS `cadre_administratif` (
 -- Table structure for table `categorie`
 --
 
-DROP TABLE IF EXISTS `categorie`;
-CREATE TABLE IF NOT EXISTS `categorie` (
-  `id_categorie` int NOT NULL AUTO_INCREMENT,
-  `nom` text,
-  PRIMARY KEY (`id_categorie`)
+CREATE TABLE `categorie` (
+  `id_categorie` int(11) NOT NULL,
+  `nom` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -70,19 +73,28 @@ CREATE TABLE IF NOT EXISTS `categorie` (
 -- Table structure for table `commande`
 --
 
-DROP TABLE IF EXISTS `commande`;
-CREATE TABLE IF NOT EXISTS `commande` (
-  `id_cmd` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `commande` (
+  `id_cmd` int(11) NOT NULL,
   `date_commande` date DEFAULT NULL,
-  `etat` text,
+  `etat` text DEFAULT NULL,
   `date_expiration` date DEFAULT NULL,
-  `champ` text,
-  `type` text,
-  `id_gerant` int DEFAULT NULL,
-  `id_fournisseur` int DEFAULT NULL,
-  PRIMARY KEY (`id_cmd`),
-  KEY `gerant_fk_2` (`id_gerant`),
-  KEY `fournisseur_fk` (`id_fournisseur`)
+  `champ` text DEFAULT NULL,
+  `type` text DEFAULT NULL,
+  `id_gerant` int(11) DEFAULT NULL,
+  `id_fournisseur` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `demande`
+--
+
+CREATE TABLE `demande` (
+  `id_demande` int(11) NOT NULL,
+  `contenu_demande` text DEFAULT NULL,
+  `type_demande` text DEFAULT NULL,
+  `id_cadre_administratif` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -91,12 +103,17 @@ CREATE TABLE IF NOT EXISTS `commande` (
 -- Table structure for table `directeur`
 --
 
-DROP TABLE IF EXISTS `directeur`;
-CREATE TABLE IF NOT EXISTS `directeur` (
-  `id_directeur` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
-  PRIMARY KEY (`id_directeur`)
+CREATE TABLE `directeur` (
+  `id_directeur` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `directeur`
+--
+
+INSERT INTO `directeur` (`id_directeur`, `nom_complet`) VALUES
+(1, 'Hamid Razouni');
 
 -- --------------------------------------------------------
 
@@ -104,19 +121,15 @@ CREATE TABLE IF NOT EXISTS `directeur` (
 -- Table structure for table `docteur`
 --
 
-DROP TABLE IF EXISTS `docteur`;
-CREATE TABLE IF NOT EXISTS `docteur` (
-  `id_docteur` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `docteur` (
+  `id_docteur` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
   `cni` varchar(100) DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `id_employee` int DEFAULT NULL,
-  PRIMARY KEY (`id_docteur`),
-  UNIQUE KEY `cni` (`cni`),
-  KEY `employee_fk_3` (`id_employee`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `id_employee` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -125,10 +138,8 @@ CREATE TABLE IF NOT EXISTS `docteur` (
 -- Table structure for table `doussier_medical`
 --
 
-DROP TABLE IF EXISTS `doussier_medical`;
-CREATE TABLE IF NOT EXISTS `doussier_medical` (
-  `id_doussier_medical` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id_doussier_medical`)
+CREATE TABLE `doussier_medical` (
+  `id_doussier_medical` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -137,19 +148,15 @@ CREATE TABLE IF NOT EXISTS `doussier_medical` (
 -- Table structure for table `employee`
 --
 
-DROP TABLE IF EXISTS `employee`;
-CREATE TABLE IF NOT EXISTS `employee` (
-  `id_employee` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `employee` (
+  `id_employee` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
   `cni` varchar(100) DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `id_categorie` int DEFAULT NULL,
-  PRIMARY KEY (`id_employee`),
-  UNIQUE KEY `cni` (`cni`),
-  KEY `categorie_fk` (`id_categorie`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `id_categorie` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -158,14 +165,11 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Table structure for table `fournisseur`
 --
 
-DROP TABLE IF EXISTS `fournisseur`;
-CREATE TABLE IF NOT EXISTS `fournisseur` (
-  `id_fournisseur` int NOT NULL AUTO_INCREMENT,
-  `nom` text,
+CREATE TABLE `fournisseur` (
+  `id_fournisseur` int(11) NOT NULL,
+  `nom` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
-  `id_gerant` int DEFAULT NULL,
-  PRIMARY KEY (`id_fournisseur`),
-  KEY `gerant_fk` (`id_gerant`)
+  `id_gerant` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -174,19 +178,15 @@ CREATE TABLE IF NOT EXISTS `fournisseur` (
 -- Table structure for table `gerant`
 --
 
-DROP TABLE IF EXISTS `gerant`;
-CREATE TABLE IF NOT EXISTS `gerant` (
-  `id_gerant` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `gerant` (
+  `id_gerant` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
   `cni` varchar(100) DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `id_employee` int DEFAULT NULL,
-  PRIMARY KEY (`id_gerant`),
-  UNIQUE KEY `cni` (`cni`),
-  KEY `employee_fk_` (`id_employee`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `id_employee` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -195,19 +195,15 @@ CREATE TABLE IF NOT EXISTS `gerant` (
 -- Table structure for table `infermiere`
 --
 
-DROP TABLE IF EXISTS `infermiere`;
-CREATE TABLE IF NOT EXISTS `infermiere` (
-  `id_infermiere` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `infermiere` (
+  `id_infermiere` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
   `cni` varchar(100) DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `id_employee` int DEFAULT NULL,
-  PRIMARY KEY (`id_infermiere`),
-  UNIQUE KEY `cni` (`cni`),
-  KEY `employee_fk_2` (`id_employee`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `id_employee` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -216,15 +212,11 @@ CREATE TABLE IF NOT EXISTS `infermiere` (
 -- Table structure for table `operation`
 --
 
-DROP TABLE IF EXISTS `operation`;
-CREATE TABLE IF NOT EXISTS `operation` (
-  `numero_operation` int NOT NULL AUTO_INCREMENT,
-  `type` text,
-  `id_docteur` int DEFAULT NULL,
-  `id_doussier_medical` int DEFAULT NULL,
-  PRIMARY KEY (`numero_operation`),
-  KEY `docteur_fk` (`id_docteur`),
-  KEY `d_medical_fk` (`id_doussier_medical`)
+CREATE TABLE `operation` (
+  `numero_operation` int(11) NOT NULL,
+  `type` text DEFAULT NULL,
+  `id_docteur` int(11) DEFAULT NULL,
+  `id_doussier_medical` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -233,12 +225,9 @@ CREATE TABLE IF NOT EXISTS `operation` (
 -- Table structure for table `operation_infermiere`
 --
 
-DROP TABLE IF EXISTS `operation_infermiere`;
-CREATE TABLE IF NOT EXISTS `operation_infermiere` (
-  `id_infermiere` int DEFAULT NULL,
-  `numero_operation` int DEFAULT NULL,
-  KEY `infermiere_fk` (`id_infermiere`),
-  KEY `n_operation_fk_2` (`numero_operation`)
+CREATE TABLE `operation_infermiere` (
+  `id_infermiere` int(11) DEFAULT NULL,
+  `numero_operation` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -247,17 +236,15 @@ CREATE TABLE IF NOT EXISTS `operation_infermiere` (
 -- Table structure for table `patient`
 --
 
-DROP TABLE IF EXISTS `patient`;
-CREATE TABLE IF NOT EXISTS `patient` (
-  `id_patient` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `patient` (
+  `id_patient` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
   `date_naissance` date DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `adresse` text,
-  `type_de_sang` text,
-  PRIMARY KEY (`id_patient`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `adresse` text DEFAULT NULL,
+  `type_de_sang` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -266,21 +253,16 @@ CREATE TABLE IF NOT EXISTS `patient` (
 -- Table structure for table `rh`
 --
 
-DROP TABLE IF EXISTS `rh`;
-CREATE TABLE IF NOT EXISTS `rh` (
-  `id_rh` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `rh` (
+  `id_rh` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `salaire` decimal(10,2) DEFAULT NULL,
   `cni` varchar(100) DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `num_tel` bigint DEFAULT NULL,
-  `id_employee` int DEFAULT NULL,
-  `id_cadre_administratif` int DEFAULT NULL,
-  PRIMARY KEY (`id_rh`),
-  UNIQUE KEY `cni` (`cni`),
-  KEY `employee_fk` (`id_employee`),
-  KEY `cadre_administartif_fk` (`id_cadre_administratif`)
+  `email` text DEFAULT NULL,
+  `num_tel` bigint(20) DEFAULT NULL,
+  `id_employee` int(11) DEFAULT NULL,
+  `id_cadre_administratif` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -289,21 +271,15 @@ CREATE TABLE IF NOT EXISTS `rh` (
 -- Table structure for table `secraitere`
 --
 
-DROP TABLE IF EXISTS `secraitere`;
-CREATE TABLE IF NOT EXISTS `secraitere` (
-  `id_sec` int NOT NULL AUTO_INCREMENT,
-  `nom_complet` text,
+CREATE TABLE `secraitere` (
+  `id_sec` int(11) NOT NULL,
+  `nom_complet` text DEFAULT NULL,
   `genre` varchar(100) DEFAULT NULL,
-  `email` text,
-  `numero_transaction` int DEFAULT NULL,
-  `id_agenda` int DEFAULT NULL,
-  `id_docteur` int DEFAULT NULL,
-  `id_patient` int DEFAULT NULL,
-  PRIMARY KEY (`id_sec`),
-  KEY `facture_fk` (`numero_transaction`),
-  KEY `docteur_fk_1` (`id_docteur`),
-  KEY `patient_fk` (`id_patient`),
-  KEY `agenda_fk` (`id_agenda`)
+  `email` text DEFAULT NULL,
+  `numero_transaction` int(11) DEFAULT NULL,
+  `id_agenda` int(11) DEFAULT NULL,
+  `id_docteur` int(11) DEFAULT NULL,
+  `id_patient` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -312,13 +288,10 @@ CREATE TABLE IF NOT EXISTS `secraitere` (
 -- Table structure for table `stock`
 --
 
-DROP TABLE IF EXISTS `stock`;
-CREATE TABLE IF NOT EXISTS `stock` (
-  `id_stock` int NOT NULL AUTO_INCREMENT,
-  `quantite` int DEFAULT NULL,
-  `id_gerant` int DEFAULT NULL,
-  PRIMARY KEY (`id_stock`),
-  KEY `gerant_fk_` (`id_gerant`)
+CREATE TABLE `stock` (
+  `id_stock` int(11) NOT NULL,
+  `quantite` int(11) DEFAULT NULL,
+  `id_gerant` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -327,15 +300,267 @@ CREATE TABLE IF NOT EXISTS `stock` (
 -- Table structure for table `system_de_facturation`
 --
 
-DROP TABLE IF EXISTS `system_de_facturation`;
-CREATE TABLE IF NOT EXISTS `system_de_facturation` (
-  `numero_transaction` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_de_facturation` (
+  `numero_transaction` int(11) NOT NULL,
   `montant_payer` decimal(10,2) DEFAULT NULL,
   `status_paiement` tinyint(1) DEFAULT NULL,
-  `mode_paiement` text,
-  `reference_facture` bigint DEFAULT NULL,
-  PRIMARY KEY (`numero_transaction`)
+  `mode_paiement` text DEFAULT NULL,
+  `reference_facture` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `agenda`
+--
+ALTER TABLE `agenda`
+  ADD PRIMARY KEY (`id_agenda`);
+
+--
+-- Indexes for table `cadre_administratif`
+--
+ALTER TABLE `cadre_administratif`
+  ADD PRIMARY KEY (`id_cadre_administratif`),
+  ADD KEY `directeur_fk` (`id_directeur`);
+
+--
+-- Indexes for table `categorie`
+--
+ALTER TABLE `categorie`
+  ADD PRIMARY KEY (`id_categorie`);
+
+--
+-- Indexes for table `commande`
+--
+ALTER TABLE `commande`
+  ADD PRIMARY KEY (`id_cmd`),
+  ADD KEY `gerant_fk_2` (`id_gerant`),
+  ADD KEY `fournisseur_fk` (`id_fournisseur`);
+
+--
+-- Indexes for table `demande`
+--
+ALTER TABLE `demande`
+  ADD PRIMARY KEY (`id_demande`),
+  ADD KEY `id_cadre_administratif` (`id_cadre_administratif`);
+
+--
+-- Indexes for table `directeur`
+--
+ALTER TABLE `directeur`
+  ADD PRIMARY KEY (`id_directeur`);
+
+--
+-- Indexes for table `docteur`
+--
+ALTER TABLE `docteur`
+  ADD PRIMARY KEY (`id_docteur`),
+  ADD UNIQUE KEY `cni` (`cni`),
+  ADD KEY `employee_fk_3` (`id_employee`);
+
+--
+-- Indexes for table `doussier_medical`
+--
+ALTER TABLE `doussier_medical`
+  ADD PRIMARY KEY (`id_doussier_medical`);
+
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`id_employee`),
+  ADD UNIQUE KEY `cni` (`cni`),
+  ADD KEY `categorie_fk` (`id_categorie`);
+
+--
+-- Indexes for table `fournisseur`
+--
+ALTER TABLE `fournisseur`
+  ADD PRIMARY KEY (`id_fournisseur`),
+  ADD KEY `gerant_fk` (`id_gerant`);
+
+--
+-- Indexes for table `gerant`
+--
+ALTER TABLE `gerant`
+  ADD PRIMARY KEY (`id_gerant`),
+  ADD UNIQUE KEY `cni` (`cni`),
+  ADD KEY `employee_fk_` (`id_employee`);
+
+--
+-- Indexes for table `infermiere`
+--
+ALTER TABLE `infermiere`
+  ADD PRIMARY KEY (`id_infermiere`),
+  ADD UNIQUE KEY `cni` (`cni`),
+  ADD KEY `employee_fk_2` (`id_employee`);
+
+--
+-- Indexes for table `operation`
+--
+ALTER TABLE `operation`
+  ADD PRIMARY KEY (`numero_operation`),
+  ADD KEY `docteur_fk` (`id_docteur`),
+  ADD KEY `d_medical_fk` (`id_doussier_medical`);
+
+--
+-- Indexes for table `operation_infermiere`
+--
+ALTER TABLE `operation_infermiere`
+  ADD KEY `infermiere_fk` (`id_infermiere`),
+  ADD KEY `n_operation_fk_2` (`numero_operation`);
+
+--
+-- Indexes for table `patient`
+--
+ALTER TABLE `patient`
+  ADD PRIMARY KEY (`id_patient`);
+
+--
+-- Indexes for table `rh`
+--
+ALTER TABLE `rh`
+  ADD PRIMARY KEY (`id_rh`),
+  ADD UNIQUE KEY `cni` (`cni`),
+  ADD KEY `employee_fk` (`id_employee`),
+  ADD KEY `cadre_administartif_fk` (`id_cadre_administratif`);
+
+--
+-- Indexes for table `secraitere`
+--
+ALTER TABLE `secraitere`
+  ADD PRIMARY KEY (`id_sec`),
+  ADD KEY `facture_fk` (`numero_transaction`),
+  ADD KEY `docteur_fk_1` (`id_docteur`),
+  ADD KEY `patient_fk` (`id_patient`),
+  ADD KEY `agenda_fk` (`id_agenda`);
+
+--
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`id_stock`),
+  ADD KEY `gerant_fk_` (`id_gerant`);
+
+--
+-- Indexes for table `system_de_facturation`
+--
+ALTER TABLE `system_de_facturation`
+  ADD PRIMARY KEY (`numero_transaction`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `agenda`
+--
+ALTER TABLE `agenda`
+  MODIFY `id_agenda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cadre_administratif`
+--
+ALTER TABLE `cadre_administratif`
+  MODIFY `id_cadre_administratif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `categorie`
+--
+ALTER TABLE `categorie`
+  MODIFY `id_categorie` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `commande`
+--
+ALTER TABLE `commande`
+  MODIFY `id_cmd` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `demande`
+--
+ALTER TABLE `demande`
+  MODIFY `id_demande` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `directeur`
+--
+ALTER TABLE `directeur`
+  MODIFY `id_directeur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `docteur`
+--
+ALTER TABLE `docteur`
+  MODIFY `id_docteur` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `doussier_medical`
+--
+ALTER TABLE `doussier_medical`
+  MODIFY `id_doussier_medical` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `fournisseur`
+--
+ALTER TABLE `fournisseur`
+  MODIFY `id_fournisseur` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `gerant`
+--
+ALTER TABLE `gerant`
+  MODIFY `id_gerant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `infermiere`
+--
+ALTER TABLE `infermiere`
+  MODIFY `id_infermiere` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `operation`
+--
+ALTER TABLE `operation`
+  MODIFY `numero_operation` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `patient`
+--
+ALTER TABLE `patient`
+  MODIFY `id_patient` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `rh`
+--
+ALTER TABLE `rh`
+  MODIFY `id_rh` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `secraitere`
+--
+ALTER TABLE `secraitere`
+  MODIFY `id_sec` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `id_stock` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `system_de_facturation`
+--
+ALTER TABLE `system_de_facturation`
+  MODIFY `numero_transaction` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -353,6 +578,12 @@ ALTER TABLE `cadre_administratif`
 ALTER TABLE `commande`
   ADD CONSTRAINT `fournisseur_fk` FOREIGN KEY (`id_fournisseur`) REFERENCES `fournisseur` (`id_fournisseur`),
   ADD CONSTRAINT `gerant_fk_2` FOREIGN KEY (`id_gerant`) REFERENCES `gerant` (`id_gerant`);
+
+--
+-- Constraints for table `demande`
+--
+ALTER TABLE `demande`
+  ADD CONSTRAINT `demande_ibfk_1` FOREIGN KEY (`id_cadre_administratif`) REFERENCES `cadre_administratif` (`id_cadre_administratif`);
 
 --
 -- Constraints for table `docteur`

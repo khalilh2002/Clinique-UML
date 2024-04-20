@@ -1,6 +1,6 @@
 <?php
-    $page_title = "RH Categorie"; // header title from base.php
-    require_once "base.php";
+require_once "base.php";
+    $page_title = "Menu"; // header title from base.php;
 ?>
 
 <!DOCTYPE html>

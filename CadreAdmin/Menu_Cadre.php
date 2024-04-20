@@ -1,4 +1,6 @@
 <?php
+
+
 session_start();
 
 // Check if the user is not logged in as cadre_administratif
@@ -84,7 +86,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 }
-?>
-<?php
-    require_once "footer.php";
 ?>

@@ -1,5 +1,19 @@
 <?php
-    $page_title = "RH Categorie"; // header title from base.php
+session_start();
+
+// Check if the user is not logged in as cadre_administratif
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'cadre_administratif') {
+    header("Location: login.php");
+    exit; // Stop further execution
+}
+
+// Database connection
+include 'config.php';
+
+// Fetch demands
+$sql = "SELECT id_demande, contenu_demande, type_demande FROM demande";
+$result = $conn->query($sql);
+    $page_title = "Menu"; // header title from base.php
     require_once "base.php";
 ?>
 
@@ -46,10 +60,12 @@
 </head>
 <body>
     <div class="container">
+         <!-- Logout button -->
+         <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
         <h1>Cadre Administratif</h1>
         <form action="" method="post">
-            <button type="submit" name="informations">Informations</button>
-            <button type="submit" name="demandes">Demandes</button>
+            <button href='info_cadres.php' type="submit" name="informations">Informations</button>
+            <button href='demandes_cadre.php' type="submit" name="demandes">Demandes</button>
         </form>
     </div>
 </body>

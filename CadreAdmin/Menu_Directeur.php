@@ -46,6 +46,8 @@
 </head>
 <body>
     <div class="container">
+         <!-- Logout button -->
+         <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
         <h1>Menu Directeur</h1>
         <form action="" method="post">
             <button type="submit" name="cadres">Liste Cadres</button>

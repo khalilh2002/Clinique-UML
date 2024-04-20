@@ -60,6 +60,8 @@ if ($result->num_rows > 0) {
     </head>
     <body>
         <div class='container'>
+        <!-- Logout button -->
+        <a href='logout.php' class='btn btn-danger' style='position: absolute; top: 10px; left: 10px;'>Logout</a>
             <h1>Liste des Cadres Administratifs</h1>
             <a href='ajouter_cadre.php' class='btn btn-primary mb-3'>Ajouter</a>
             <table class='table'>
@@ -86,6 +88,7 @@ if ($result->num_rows > 0) {
     }
     echo "</tbody>
         </table>
+        <a href='Menu_Directeur.php' class='btn btn-secondary'>Retour</a>
     </div>
     </body>
     </html>";

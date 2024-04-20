@@ -1,27 +1,16 @@
 <?php
 session_start(); // Start session
 // Check if cadre is logged in
-if (!isset($_SESSION['id_cadre_administratif'])) {
-    header("Location: login.php"); // Redirect to login page if not logged in
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'cadre_administratif') {
+    header("Location: login.php"); // Redirect to login page if not logged in or not cadre_administratif
     exit;
 }
 
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "hospitale"; // Change to your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'config.php';
 
 // Retrieve cadre administratif information
-$id_cadre_admin = $_SESSION['id_cadre_administratif'];
+$id_cadre_admin = $_SESSION['user_id']; // Assuming the user ID is stored in 'user_id' session variable
 $sql = "SELECT nom_complet, status FROM cadre_administratif WHERE id_cadre_administratif = $id_cadre_admin";
 $result = $conn->query($sql);
 
@@ -73,6 +62,8 @@ $conn->close();
 </head>
 <body>
     <div class="container">
+         <!-- Logout button -->
+         <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
         <h1>Informations du Cadre Administratif</h1>
         <div class="info-item">
             <label for="nom">Nom Complet:</label>
@@ -82,6 +73,7 @@ $conn->close();
             <label for="status">Status:</label>
             <p id="status"><?php echo $status; ?></p>
         </div>
+        <a href="Menu_Cadre.php" class="btn btn-secondary">Retour</a>
     </div>
 </body>
 </html>

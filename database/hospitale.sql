@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2024 at 06:20 PM
+-- Generation Time: Apr 20, 2024 at 07:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -94,8 +94,16 @@ CREATE TABLE `demande` (
   `id_demande` int(11) NOT NULL,
   `contenu_demande` text DEFAULT NULL,
   `type_demande` text DEFAULT NULL,
-  `id_cadre_administratif` int(11) DEFAULT NULL
+  `id_cadre_administratif` int(11) DEFAULT NULL,
+  `Status` text DEFAULT 'En Attente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `demande`
+--
+
+INSERT INTO `demande` (`id_demande`, `contenu_demande`, `type_demande`, `id_cadre_administratif`, `Status`) VALUES
+(1, 'Hello this is my Demande', 'Dimission', NULL, 'En Attente');
 
 -- --------------------------------------------------------
 
@@ -482,7 +490,7 @@ ALTER TABLE `commande`
 -- AUTO_INCREMENT for table `demande`
 --
 ALTER TABLE `demande`
-  MODIFY `id_demande` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_demande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `directeur`

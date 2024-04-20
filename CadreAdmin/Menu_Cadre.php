@@ -49,7 +49,7 @@
         <h1>Cadre Administratif</h1>
         <form action="" method="post">
             <button type="submit" name="informations">Informations</button>
-            <button type="submit" name="demandes">Demandes</button>
+            <button href='demandes_cadre.php' type="submit" name="demandes">Demandes</button>
         </form>
     </div>
 </body>

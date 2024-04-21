@@ -27,6 +27,7 @@
 
 
    if (isset($_POST['add_employee'], $_POST['salaire_employee'], $_POST['cni_employee'])) {
+    
        $qry = "
            INSERT INTO employee (nom_complet, salaire, cni, genre, email, num_tel, id_categorie)
            VALUES
@@ -40,35 +41,51 @@
        $stmt->bindParam(':var5', $_POST['email_employee']);
        $stmt->bindParam(':var6', $_POST['telephone_employee']);
        $stmt->bindParam(':var7', $_POST['categorie_employee']);
-       
-       
-       if (!$stmt->execute()) {
-           echo "error database";
+
+       try {
+            if (!$stmt->execute()) {
+                echo "error database";
+            }
+            
+            $stmt = $conn->prepare("SELECT * FROM employee WHERE id_employee = LAST_INSERT_ID()");
+            $stmt->execute();
+            $id = $stmt->fetch();
+
+            docteur($_POST, $id);
+
+            
+
+            unset($_POST);
+
+       } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                // Handle duplicate entry error
+                echo "
+                <script>
+                window.alert('Dupliquer CNI ')
+                </script>
+                ";
+            }
        }
-       $stmt = $conn->prepare("SELECT * FROM employee WHERE id_employee = LAST_INSERT_ID()");
-       $stmt->execute();
-       $id = $stmt->fetch();
-
-       docteur($_POST, $id);
-
        
-
-       unset($_POST);
+       
+       
    }
 
    
 
 ?>
+
 <section>
     
     <div class="container mt-5">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="myTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">List Employee</button>
+                <button class="nav-link active text-capitalize fw-bold" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">List Employee</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Ajoute Employee</button>
+                <button class="nav-link text-capitalize fw-bold" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Ajoute Employee</button>
             </li>
             
         </ul>
@@ -79,7 +96,7 @@
                 <form action="gestion_employee.php" method="get">
                     <div class="input-group my-3 mx-auto ">
                         <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="keyword">
-                        <button class="btn btn-outline-secondary" type="submit" name="search_employee">Search</button>
+                        <button class="btn btn-secondary" type="submit" name="search_employee">Search</button>
                     </div>
                 </form>
 
@@ -243,22 +260,33 @@
         global $conn;
         $qry = "SELECT nom FROM categorie WHERE id_categorie =".$data["categorie_employee"]."";
         $stmt = $conn->prepare($qry);
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            echo "  
+                <script>
+                    windows.alert(\"il y a une error sur sur categorei 'refresh' \");
+                </script>
+            ";
+        }
+        
         $x = $stmt->fetch();
 
-        if (strtolower($x['nom']) != 'docteur' && strtolower($x['nom']) != 'infermier' ) {
+        //if (!preg_match("/\b(docteur|infirmier)\b/i", strtolower($x['nom']))) {
+        if(!preg_match("/\binfermier\b/i", strtolower($x['nom'])) && !preg_match("/\b(docteur)\b/i", strtolower($x['nom'])) && !preg_match("/\binfermier\b/i", strtolower($x['nom']))){ 
+            
             return;
-
-        }elseif ($copy["nom_complet"] != $data["nom_employee"] && (strtolower($x['nom']) === 'docteur' || strtolower($x['nom']) === 'infermier' ) ) {
+        }elseif ($copy["nom_complet"] != $data["nom_employee"] && preg_match("/\b(docteur|infirmier)\b/i", strtolower($x['nom'])) ) {
             echo "  
                 <script>
                     windows.alert(\"il y a une error , suprimer l'employe et reajouter \");
                 </script>
             ";
             return;
+
         }else{
-            switch (strtolower( $x['nom'])) {
-                case 'docteur':
+
+
+            if(preg_match("/\b(docteur)\b/i", strtolower($x['nom']))){
+            
                     $qry = "INSERT INTO docteur (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
                             VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
                             '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
@@ -271,13 +299,15 @@
                         </script>
                         ";
                     }
+                    
 
                     
-                    break;
-                case 'infermier';
+                }elseif(preg_match("/\binfermier\b/i", strtolower($x['nom']))  || preg_match("/\binfermiere\b/i", strtolower($x['nom']))){
+
                     $qry = "INSERT INTO infermiere (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
                             VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
                             '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
+
                     $stmt = $conn->prepare($qry);
                     
                     if (!$stmt->execute() ) {
@@ -288,15 +318,15 @@
                         ";
                     }
 
-                    break;
-                default:
-                    break;
+
+                }
                     
             }
+            unset($_POST);
         }
         
 
         
-    }
+    
 
 ?>

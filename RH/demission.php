@@ -49,11 +49,11 @@
         <div class="card-body">
             <form action="demission.php" method="post">
 
-                <h5 class="card-title">donner le CNI</h5>
+                <h5 class="card-title fw-bold text-capitalize">donner le CNI</h5>
                 <input required type="text" class="form-control" name="cni_emp">
                 <br>
 
-                <h5 class="card-title">donner le nom de employee</h5>
+                <h5 class="card-title fw-bold text-capitalize">donner le nom de employee</h5>
                 <input required type="text" class="form-control" name="name_emp">
 
                 <div class="col-md-4">
@@ -70,8 +70,8 @@
                             $ctg = $stmt_->fetchAll(PDO::FETCH_ASSOC);
                             
                         ?>
-                        
-                    <label for="inputState" class="form-label">Post</label>
+                        <br>
+                    <label for="inputState" class="form-label fw-bold text-capitalize ">Post</label>
                     <select id="inputState" class="form-select" name="categorie">
                         
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2024 at 02:22 PM
+-- Generation Time: Apr 21, 2024 at 02:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -26,8 +26,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `agenda`
 --
-
-
 
 CREATE TABLE `agenda` (
   `id_agenda` int(11) NOT NULL,
@@ -98,7 +96,7 @@ CREATE TABLE `demande` (
   `contenu_demande` text DEFAULT NULL,
   `type_demande` text DEFAULT NULL,
   `id_cadre_administratif` int(11) DEFAULT NULL,
-  `Status` VARCHAR(100) DEFAULT 'En Attente'
+  `Status` text DEFAULT 'En Attente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

@@ -5,12 +5,13 @@
 <?php 
     require_once "../database/database.php";
     if (isset($_POST["employee_suprimer_submit"] , $_POST['cni_emp'] , $_POST['name_emp'] ,$_POST['categorie'] )) {
-        $stmt = $conn->prepare(
-            "DELETE FROM employee 
-            WHERE cni_employee = '".$_POST['cni_emp']."'
-            AND nom_complet ='".$_POST['name_emp']."'
-            id_categorie = ".$_POST['categorie']." "
-        );
+        $qry = "DELETE FROM employee 
+        WHERE cni = '".$_POST['cni_emp']."'
+        AND nom_complet ='".$_POST['name_emp']."' AND
+        id_categorie = ".$_POST['categorie']." ";
+
+    
+        $stmt = $conn->prepare($qry);
 
         if (!$stmt->execute()) {
             $message = ['warning' => 'error in deleting employee'];

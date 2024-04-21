@@ -578,13 +578,13 @@ ALTER TABLE `system_de_facturation`
 -- Constraints for table `cadre_administratif`
 --
 ALTER TABLE `cadre_administratif`
-  ADD CONSTRAINT `directeur_fk` FOREIGN KEY (`id_directeur`) REFERENCES `directeur` (`id_directeur`);
+  ADD CONSTRAINT `directeur_fk` FOREIGN KEY (`id_directeur`) REFERENCES `directeur` (`id_directeur`) ON DELETE CASCADE;;
 
 --
 -- Constraints for table `commande`
 --
 ALTER TABLE `commande`
-  ADD CONSTRAINT `fournisseur_fk` FOREIGN KEY (`id_fournisseur`) REFERENCES `fournisseur` (`id_fournisseur`),
+  ADD CONSTRAINT `fournisseur_fk` FOREIGN KEY (`id_fournisseur`) REFERENCES `fournisseur` (`id_fournisseur`) ,
   ADD CONSTRAINT `gerant_fk_2` FOREIGN KEY (`id_gerant`) REFERENCES `gerant` (`id_gerant`);
 
 --
@@ -599,11 +599,28 @@ ALTER TABLE `demande`
 ALTER TABLE `docteur`
   ADD CONSTRAINT `employee_fk_3` FOREIGN KEY (`id_employee`) REFERENCES `employee` (`id_employee`);
 
+
+
+ALTER TABLE `docteur` DROP FOREIGN KEY `employee_fk_3`;
+
+-- Add a new foreign key constraint with ON DELETE CASCADE
+ALTER TABLE `docteur`
+  ADD CONSTRAINT `employee_fk_3`
+  FOREIGN KEY (`id_employee`)
+  REFERENCES `employee` (`id_employee`)
+  ON DELETE CASCADE;
 --
 -- Constraints for table `employee`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `categorie_fk` FOREIGN KEY (`id_categorie`) REFERENCES `categorie` (`id_categorie`);
+
+
+
+
+  -- Drop the existing foreign key constraint
+
+
 
 --
 -- Constraints for table `fournisseur`
@@ -622,6 +639,8 @@ ALTER TABLE `gerant`
 --
 ALTER TABLE `infermiere`
   ADD CONSTRAINT `employee_fk_2` FOREIGN KEY (`id_employee`) REFERENCES `employee` (`id_employee`);
+
+
 
 --
 -- Constraints for table `operation`
@@ -669,4 +688,37 @@ COMMIT;
 
 
 
+/*khalil important -----------------------------------------*/
 
+
+
+ALTER TABLE `employee` DROP FOREIGN KEY `categorie_fk`;
+
+-- Add a new foreign key constraint with ON DELETE CASCADE
+ALTER TABLE `employee`
+  ADD CONSTRAINT `categorie_fk`
+  FOREIGN KEY (`id_categorie`)
+  REFERENCES `categorie` (`id_categorie`)
+  ON DELETE CASCADE;
+
+
+
+
+ALTER TABLE `docteur` DROP FOREIGN KEY `employee_fk_3`;
+
+-- Add a new foreign key constraint with ON DELETE CASCADE
+ALTER TABLE `docteur`
+  ADD CONSTRAINT `employee_fk_3`
+  FOREIGN KEY (`id_employee`)
+  REFERENCES `employee` (`id_employee`)
+  ON DELETE CASCADE;
+
+
+ALTER TABLE `infermiere` DROP FOREIGN KEY `employee_fk_2`;
+
+-- Add a new foreign key constraint with ON DELETE CASCADE
+ALTER TABLE `infermiere`
+  ADD CONSTRAINT `employee_fk_2`
+  FOREIGN KEY (`id_employee`)
+  REFERENCES `employee` (`id_employee`)
+  ON DELETE CASCADE;

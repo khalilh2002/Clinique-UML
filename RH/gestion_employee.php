@@ -38,6 +38,7 @@
        $stmt = $conn->prepare("SELECT * FROM employee WHERE id_employee = LAST_INSERT_ID()");
        $stmt->execute();
        $id = $stmt->fetch();
+
        docteur($_POST, $id);
 
        
@@ -235,17 +236,57 @@
         $stmt->execute();
         $x = $stmt->fetch();
 
-        switch (strtolower( $x[0])) {
-            case 'docteur':
-                
-                
-                break;
-            case 'infermiere';
-                break;
-            default:
-                break;
-                
+        if (strtolower($x['nom']) != 'docteur' && strtolower($x['nom']) != 'infermier' ) {
+            return;
+
+        }elseif ($copy["nom_complet"] != $data["nom_employee"] && (strtolower($x['nom']) === 'docteur' || strtolower($x['nom']) === 'infermier' ) ) {
+            echo "  
+                <script>
+                    windows.alert(\"il y a une error , suprimer l'employe et reajouter \");
+                </script>
+            ";
+            return;
+        }else{
+            switch (strtolower( $x['nom'])) {
+                case 'docteur':
+                    $qry = "INSERT INTO docteur (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
+                            VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
+                            '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
+                    $stmt = $conn->prepare($qry);
+                    
+                    if (!$stmt->execute() ) {
+                        echo"
+                        <script>
+                            windows.alert(\"il y a une error \");
+                        </script>
+                        ";
+                    }
+
+                    
+                    break;
+                case 'infermier';
+                    $qry = "INSERT INTO infermiere (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
+                            VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
+                            '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
+                    $stmt = $conn->prepare($qry);
+                    
+                    if (!$stmt->execute() ) {
+                        echo"
+                        <script>
+                            windows.alert(\"il y a une error \");
+                        </script>
+                        ";
+                    }
+
+                    break;
+                default:
+                    break;
+                    
+            }
         }
+        
+
+        
     }
 
 ?>

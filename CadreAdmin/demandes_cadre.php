@@ -57,18 +57,41 @@ $result = $conn->query($sql);
         }
         .btn-en-attente {
             background-color: #007bff;
-            color: #fff;
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
         }
         .btn-accepte {
             background-color: #28a745;
-            color: #fff;
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
         }
         .btn-refuse {
             background-color: #dc3545;
-            color: #fff;
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
+        }
+        /* Added classes for disabled buttons */
+        .btn-en-attente:disabled {
+            background-color: #007bff;
+            opacity: 0.5; /* Reduce opacity for disabled buttons */
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
+        }
+        .btn-accepte:disabled {
+            background-color: #28a745;
+            opacity: 0.5; /* Reduce opacity for disabled buttons */
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
+        }
+        .btn-refuse:disabled {
+            background-color: #dc3545;
+            opacity: 0.5; /* Reduce opacity for disabled buttons */
+            color: #000; /* Change text color to black */
+            font-weight: bold; /* Make text bold */
         }
     </style>
 </head>
+
 <body>
     <div class="container">
          <!-- Logout button -->

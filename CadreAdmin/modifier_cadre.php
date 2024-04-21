@@ -1,4 +1,5 @@
 <?php
+$page_title = "Modifier Cadre";
 require_once "base.php";
 // Database connection
 $servername = "localhost";

@@ -1,6 +1,8 @@
 <?php
 require_once "base.php";
+$page_title = "Ajouter Demande";
 session_start(); // Start session
+
 // Check if cadre is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'cadre_administratif') {
     header("Location: login.php"); // Redirect to login page if not logged in or not cadre_administratif
@@ -47,18 +49,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Ajouter une Demande</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="contenu_demande">Contenu de la Demande</label>
-                <textarea class="form-control" id="contenu_demande" name="contenu_demande" rows="5" required></textarea>
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Ajouter une Demande</h1>
             </div>
-            <div class="form-group">
-                <label for="type_demande">Type de Demande</label>
-                <input type="text" class="form-control" id="type_demande" name="type_demande" required>
+            <div class="card-body">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group">
+                        <label for="contenu_demande">Contenu de la Demande</label>
+                        <textarea class="form-control" id="contenu_demande" name="contenu_demande" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="type_demande">Type de Demande</label>
+                        <input type="text" class="form-control" id="type_demande" name="type_demande" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Confirmer</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

@@ -1,3 +1,13 @@
+<?php
+    
+    session_start();
+    if (!isset($_SESSION['user']) || $_SESSION['user'] != true) {
+        
+        header('Location: login.php');
+        exit; 
+    }
+?>
+
 <?php 
         require_once "../database/database.php";
         if (isset($_POST["employee_modifier"])) {

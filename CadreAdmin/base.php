@@ -28,7 +28,7 @@
 </head>
 <body>
     <!-- Background image -->
-    <img class="background-image" src="http://localhost/Clinique-UML/images/clinique.jpg" alt="Background Image">
+    <img class="background-image" src="../images/clinique.jpg" alt="Background Image">
     
     <!-- Rest of your HTML content goes here -->
     <div></div>

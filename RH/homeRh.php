@@ -1,4 +1,13 @@
 <?php
+    
+    session_start();
+    if (!isset($_SESSION['user']) || $_SESSION['user'] != true) {
+        
+        header('Location: login.php');
+        exit; 
+    }
+?>
+<?php
     $page_title = "RH Home"; // header title from base.php
     require_once "base.php";
 ?>

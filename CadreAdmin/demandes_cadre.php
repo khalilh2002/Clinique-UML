@@ -1,4 +1,5 @@
 <?php
+$page_title = "Demandes";
 require_once "base.php";
 session_start(); // Start session
 // Check if cadre is logged in

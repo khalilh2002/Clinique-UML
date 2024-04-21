@@ -1,5 +1,6 @@
 <?php
 require_once "base.php";
+$page_title = "Ajouter Cadre";
 session_start(); // Start session
 
 // Check if directeur is logged in

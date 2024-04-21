@@ -1,4 +1,5 @@
 <?php
+$page_title = "Liste Cadres";
 require_once "base.php";
 // Database connection
 $servername = "localhost";

@@ -10,6 +10,11 @@
         global $default_tab;
         return $default_tab === $tabId ? 'show active' : '';
     }
+    if (isset($_GET["search_employee"] , $_GET["keyword"])) {
+        $var = $_GET["keyword"];
+    }else{
+        $var='';
+    }
 ?>
 
 <?php 
@@ -76,13 +81,21 @@
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content m-3" id="myTabContent">
         <div class="tab-pane fade <?= isActive('tab1') ?>" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            
+                <form action="gerer_categorie.php" method="get">
+                    <div class="input-group my-3 mx-auto ">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="keyword">
+                        <button class="btn btn-outline-secondary" type="submit" name="search_employee">Search</button>
+                    </div>
+                </form>
+
             
             <?php 
                 require_once "../database/database.php";
-                $qry = "SELECT * FROM categorie";
+                $qry = "SELECT * FROM categorie
+                        WHERE nom LIKE '%".$var."%'";
+
                 $stmt = $conn->prepare($qry);
                 
                 if (!$stmt->execute()) {

@@ -7,6 +7,15 @@
 <?php
    require_once "../database/database.php";
 
+
+   if (isset($_GET["search_employee"] , $_GET["keyword"])) {
+        $var = $_GET["keyword"];
+    }else{
+        $var='';
+    }
+
+
+
    if (isset($_POST['add_employee'], $_POST['salaire_employee'], $_POST['cni_employee'])) {
        $qry = "
            INSERT INTO employee (nom_complet, salaire, cni, genre, email, num_tel, id_categorie)
@@ -26,9 +35,19 @@
        if (!$stmt->execute()) {
            echo "error database";
        }
+       $stmt = $conn->prepare("SELECT * FROM employee WHERE id_employee = LAST_INSERT_ID()");
+       $stmt->execute();
+       $id = $stmt->fetch();
+
+       docteur($_POST, $id);
+
+       
+
        unset($_POST);
    }
+
    
+
 ?>
 <section>
     
@@ -46,11 +65,19 @@
 
         <!-- Tab panes -->
         <div class="tab-content " id="myTabContent">
-            <div class="tab-pane fade show active m-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                
+            <div class="tab-pane fade show active m-3" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <form action="gestion_employee.php" method="get">
+                    <div class="input-group my-3 mx-auto ">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="keyword">
+                        <button class="btn btn-outline-secondary" type="submit" name="search_employee">Search</button>
+                    </div>
+                </form>
+
                 <?php 
                     require_once "../database/database.php";
-                    $qry = "SELECT * FROM employee LEFT JOIN categorie on employee.id_categorie = categorie.id_categorie";
+                    $qry = "SELECT * FROM employee LEFT JOIN categorie on employee.id_categorie = categorie.id_categorie 
+                    WHERE nom_complet LIKE '%".$var."%' OR cni LIKE '%".$var."%' OR email LIKE '%".$var."%' OR nom LIKE '%".$var."%'";
+                    
                     $stmt = $conn->prepare($qry);
                     
                     if (!$stmt->execute()) {
@@ -104,7 +131,7 @@
                     </form>
                         
                 </div>
-            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <div class="tab-pane fade m-3" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <div class="card">
                         <div class="card-header bg-success">
                             Ajouter
@@ -197,3 +224,69 @@
 <section>
     
 </section>
+
+<?php 
+    function docteur($data , $copy){
+        /* var_dump($copy);
+        var_dump($data); */
+        require_once "../database/database.php";
+        global $conn;
+        $qry = "SELECT nom FROM categorie WHERE id_categorie =".$data["categorie_employee"]."";
+        $stmt = $conn->prepare($qry);
+        $stmt->execute();
+        $x = $stmt->fetch();
+
+        if (strtolower($x['nom']) != 'docteur' && strtolower($x['nom']) != 'infermier' ) {
+            return;
+
+        }elseif ($copy["nom_complet"] != $data["nom_employee"] && (strtolower($x['nom']) === 'docteur' || strtolower($x['nom']) === 'infermier' ) ) {
+            echo "  
+                <script>
+                    windows.alert(\"il y a une error , suprimer l'employe et reajouter \");
+                </script>
+            ";
+            return;
+        }else{
+            switch (strtolower( $x['nom'])) {
+                case 'docteur':
+                    $qry = "INSERT INTO docteur (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
+                            VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
+                            '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
+                    $stmt = $conn->prepare($qry);
+                    
+                    if (!$stmt->execute() ) {
+                        echo"
+                        <script>
+                            windows.alert(\"il y a une error \");
+                        </script>
+                        ";
+                    }
+
+                    
+                    break;
+                case 'infermier';
+                    $qry = "INSERT INTO infermiere (nom_complet , salaire , cni , genre , email , num_tel ,id_employee)
+                            VALUES('".$copy['nom_complet']."', ".$copy['salaire']." , '".$copy['cni']."' , '".$copy['genre']."',
+                            '".$copy['email']."',".$copy['num_tel'].",".$copy['id_employee'].")";
+                    $stmt = $conn->prepare($qry);
+                    
+                    if (!$stmt->execute() ) {
+                        echo"
+                        <script>
+                            windows.alert(\"il y a une error \");
+                        </script>
+                        ";
+                    }
+
+                    break;
+                default:
+                    break;
+                    
+            }
+        }
+        
+
+        
+    }
+
+?>

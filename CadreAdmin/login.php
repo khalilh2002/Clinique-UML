@@ -1,4 +1,6 @@
 <?php
+$page_title = "Login";
+require_once "base.php";
 session_start();
 
 // Include database connection

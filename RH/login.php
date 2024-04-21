@@ -39,14 +39,14 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-md-3 login-container">
-      <h3 class="mb-4">Login RH</h3>
+      <h3 class="mb-4 fw-bold text-uppercase lh-lg">Login RH</h3>
       <form action="login.php" method="post">
         <div class="mb-3">
-          <label for="id" class="form-label">id</label>
+          <label for="id" class="form-label fw-bold">ID</label>
           <input type="number" class="form-control" id="id" name="id" required>
         </div>
         <div class="mb-3">
-          <label for="username" class="form-label">nom complete</label>
+          <label for="username" class="form-label fw-bold">Nom Complet</label>
           <input type="text" class="form-control" id="username" name="username" required>
         </div>
         <button type="submit" name="login_rh" class="btn btn-primary">Login</button>

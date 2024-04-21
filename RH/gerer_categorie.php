@@ -80,13 +80,13 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="myTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link <?= isActive('tab1') ?>" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">List Categorie</button>
+            <button class="nav-link fw-bold <?= isActive('tab1') ?>" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">List Categorie</button>
         </li>
         <li class="nav-item " role="presentation">
-            <button class="nav-link <?= isActive('tab2') ?>" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Ajoute Categorie</button>
+            <button class="nav-link fw-bold <?= isActive('tab2') ?>" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Ajoute Categorie</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link <?= isActive('tab3') ?>" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Suprimer Categorie</button>
+            <button class="nav-link fw-bold <?= isActive('tab3') ?>" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Suprimer Categorie</button>
         </li>
     </ul>
 
@@ -96,7 +96,7 @@
                 <form action="gerer_categorie.php" method="get">
                     <div class="input-group my-3 mx-auto ">
                         <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button" name="keyword">
-                        <button class="btn btn-outline-secondary" type="submit" name="search_employee">Search</button>
+                        <button class="btn btn-secondary" type="submit" name="search_employee">Search</button>
                     </div>
                 </form>
 
@@ -116,8 +116,8 @@
                 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             ?>
 
-                <table class="table">
-                    <thead>
+                <table class="table  table-bordered">
+                    <thead class="table-dark">
                         <tr>
                         <th scope="col">id</th>
                         <th scope="col">nom</th>
@@ -155,7 +155,7 @@
                 <div class="card-body">
                     <form action="gerer_categorie.php" method="get">
 
-                        <h5 class="card-title">donner le nom de nouveaux categorie</h5>
+                        <h5 class="card-title text-capitalize">donner le nom de nouveaux categorie</h5>
                         <input required type="text" class="form-control" name="name_categorie">
                         <br>
                         <button type="submit" name="categorie_add_submit" class="btn btn-primary">envoyer</button>
@@ -174,13 +174,13 @@
                 <div class="card-body">
                     <form action="gerer_categorie.php" method="get">
 
-                        <h5 class="card-title">donner le ID de categorie</h5>
+                        <h5 class="card-title text-capitalize">donner le ID de categorie</h5>
                         <input required type="text" class="form-control" name="id_categorie">
                         <br>
 
-                        <h5 class="card-title">donner le nom de categorie</h5>
+                        <h5 class="card-title text-capitalize">donner le nom de categorie</h5>
                         <input required type="text" class="form-control" name="name_categorie">
-
+                        <br>
                         <button type="submit" name="categorie_suprimer_submit" class="btn btn-danger">Suprimer</button>
                         <input type="hidden" name="default_tab" value="tab3">
 

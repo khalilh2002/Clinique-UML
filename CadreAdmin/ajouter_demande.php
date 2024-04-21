@@ -16,16 +16,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $type_demande = $_POST['type_demande'];
     $id_cadre_administratif = $_SESSION['user_id']; // Assign the logged-in cadre's ID
 
-    // Insert demande into database
-    $sql = "INSERT INTO demande (contenu_demande, type_demande, id_cadre_administratif, Status) 
-            VALUES ('$contenu_demande', '$type_demande', $id_cadre_administratif, 'En Attente')";
-    if ($conn->query($sql) === TRUE) {
+    // Prepare and bind the SQL statement
+    $stmt = $conn->prepare("INSERT INTO demande (contenu_demande, type_demande, id_cadre_administratif, Status) VALUES (?, ?, ?, 'En Attente')");
+    $stmt->bind_param("ssi", $contenu_demande, $type_demande, $id_cadre_administratif);
+
+    // Execute the statement
+    if ($stmt->execute()) {
         header("Location: demandes_cadre.php"); // Redirect to demande_cadre page after successful insertion
         exit;
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
+    // Close statement
+    $stmt->close();
+    // Close connection
     $conn->close();
 }
 ?>
@@ -45,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
                 <label for="contenu_demande">Contenu de la Demande</label>
-                <input type="text" class="form-control" id="contenu_demande" name="contenu_demande" required>
+                <textarea class="form-control" id="contenu_demande" name="contenu_demande" rows="5" required></textarea>
             </div>
             <div class="form-group">
                 <label for="type_demande">Type de Demande</label>

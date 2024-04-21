@@ -1,4 +1,5 @@
 <?php
+require_once "base.php";
 session_start(); // Start session
 
 // Check if directeur is logged in

@@ -1,6 +1,4 @@
 <?php
-
-
 session_start();
 
 // Check if the user is not logged in as cadre_administratif
@@ -15,8 +13,8 @@ include 'config.php';
 // Fetch demands
 $sql = "SELECT id_demande, contenu_demande, type_demande FROM demande";
 $result = $conn->query($sql);
-    $page_title = "Menu"; // header title from base.php
-    require_once "base.php";
+$page_title = "Menu"; // header title from base.php
+require_once "base.php"; // Including base.php
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +22,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadre Administratif</title>
+    <title>Cadre Administratif - Menu</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,12 +60,12 @@ $result = $conn->query($sql);
 </head>
 <body>
     <div class="container">
-         <!-- Logout button -->
-         <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
+        <!-- Logout button -->
+        <a href="logout.php" class="btn btn-danger" style="position: absolute; top: 10px; left: 10px;">Logout</a>
         <h1>Cadre Administratif</h1>
         <form action="" method="post">
-            <button href='info_cadres.php' type="submit" name="informations">Informations</button>
-            <button href='demandes_cadre.php' type="submit" name="demandes">Demandes</button>
+            <button type="submit" name="informations">Informations</button>
+            <button type="submit" name="demandes">Demandes</button>
         </form>
     </div>
 </body>

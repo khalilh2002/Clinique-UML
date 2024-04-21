@@ -1,4 +1,5 @@
 <?php
+require_once "base.php";
 // Database connection
 $servername = "localhost";
 $username = "root";

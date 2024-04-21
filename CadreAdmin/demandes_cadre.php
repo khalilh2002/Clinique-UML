@@ -1,4 +1,5 @@
 <?php
+require_once "base.php";
 session_start(); // Start session
 // Check if cadre is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'cadre_administratif') {

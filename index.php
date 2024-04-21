@@ -61,7 +61,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Admin</h5>
-                        <a href="settings.php" class="btn btn-primary">Aller a Admin</a>
+                        <a href="CadreAdmin/login.php" class="btn btn-primary">Aller a Admin</a>
                     </div>
                 </div>
             </div>

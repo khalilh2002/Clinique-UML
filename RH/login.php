@@ -6,19 +6,29 @@
         $stmt = $conn->prepare($qry);
         $stmt->execute();
         $data_ = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if (count($data_)==0) {
+        echo count($data_);
+        var_dump($data_);
+        
+        if (count($data_)===0 ) {
             echo"
                 <script>
                     window.alert('id or name is wrong')
                 </script>
             ";
-        }else{
+        }elseif( strtolower($data_[0]['status'])==='rh' || strtolower($data_[0]['status'])==='ressource humaine' ){
             session_start();
             $_SESSION['user']=true;
             session_write_close();
             header('location:homeRh.php');
             exit;
             
+        }else{
+          echo"
+                <script>
+                    window.alert('tu n'as pas l'acess a ce page')
+                </script>
+            ";
+
         }
 
     }

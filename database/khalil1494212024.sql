@@ -94,10 +94,11 @@ CREATE TABLE IF NOT EXISTS `commande` (
   `date_commande` date DEFAULT NULL,
   `etat` text COLLATE utf8mb4_general_ci,
   `date_expiration` date DEFAULT NULL,
-  `champ` text COLLATE utf8mb4_general_ci,
   `type` text COLLATE utf8mb4_general_ci,
   `id_gerant` int DEFAULT NULL,
   `id_fournisseur` int DEFAULT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `quantité` int DEFAULT NULL,
   PRIMARY KEY (`id_cmd`),
   KEY `gerant_fk_2` (`id_gerant`),
   KEY `fournisseur_fk` (`id_fournisseur`)
@@ -216,8 +217,8 @@ DROP TABLE IF EXISTS `fournisseur`;
 CREATE TABLE IF NOT EXISTS `fournisseur` (
   `id_fournisseur` int NOT NULL AUTO_INCREMENT,
   `nom` text COLLATE utf8mb4_general_ci,
-  `salaire` decimal(10,2) DEFAULT NULL,
   `id_gerant` int DEFAULT NULL,
+  `type` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id_fournisseur`),
   KEY `gerant_fk` (`id_gerant`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -50,7 +50,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Stock</h5>
-                        <a href="profile.php" class="btn btn-primary">Aller a Stock </a>
+                        <a href="./stock/menu.php" class="btn btn-primary">Aller a Stock </a>
                     </div>
                 </div>
             </div>

@@ -16,8 +16,9 @@ This repository contains the source code for a clinic management system designed
   - Monitor system usage and performance.
 
 ## Technologies Used
--**Frontend**
-  -BootStrap 5
+
+- **Frontend**:
+  - Bootstrap 5
   
 - **Backend**:
   - PHP

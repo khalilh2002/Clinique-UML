@@ -23,4 +23,7 @@ This repository contains the source code for a clinic management system designed
 - **Backend**:
   - PHP
   - MySQL
+ 
+## Database
+  /database/amine.sql
   
